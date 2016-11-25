@@ -52,7 +52,7 @@ int main(void) {
   char   header[256];
 
   Basis_Point bp;
-  mode2_struct m2;
+  SigGen_G4_Struct m2;
   SigGen_Output sgo;
 
   tau = 3.0;
@@ -85,7 +85,8 @@ int main(void) {
   int test,evt_cnt=0;
   old_seg = -1;
   int status = 0;
-  while((status = read_mode2(file,&m2))) {
+//  while((status = read_mode2(file,&m2))) {					// use for OakRidgeLBNL detector
+  while((status = read_G4(file,&m2))) {						// use for SIGMA
 //    if(evt_cnt>10000) break;							// evt_cnt used to test small portion of data
     if(status != 1) continue;							// If event is not type 1, continue to next event
     memset(sgo.signal_mult, 0, sizeof(sgo.signal_mult));

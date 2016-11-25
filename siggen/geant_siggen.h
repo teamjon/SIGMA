@@ -4,12 +4,20 @@
 #include <stdarg.h>
 #include "pdecomp.h"
 
-#define BASIS "geant_siggen_basis.dat"
+#define BASIS "geant_siggen_basis.dat"					// Basis file 
 //#define MODE2 "Geant_Heather/ScanCs-24mmR-2mmColl.dat"		// Cs Geant 4 simulation data 2mm coll
 //#define MODE2 "Geant_Heather/ScanCo-24mmR-2mmColl.dat"			// Co Geant 4 simulation data 2mm coll
 #define MODE2 "Geant_Heather/ScanCs-24mmR-1mmColl.dat"			// Cs Geant 4 simulation data 1mm coll
 //#define MODE2 "Geant_Heather/Scan.dat"				// Geant 4 test simulation data
 #define NEVNTS 100
+
+/*
+	- For use with OakRidge/LBNL detector, mode2_struct defines the data structure for mode 2 GRETINA data i.e. the output of Heathers G4 code
+
+	- For use with SIGMA, Marc_G4_Struct defines the struct for the output of Marc's G4 simulation, with SigGen_G4_Struct defining the parsed struct for use in SigGen
+
+	- For both detectors, SigGen_Output defines the struct for the output of SigGen
+*/
 
 typedef struct {
   int type;				/* Interaction type id -> temp set to 25 */
@@ -76,6 +84,23 @@ typedef struct {
   mode2_struct   *basis;                /* basis-signal data */
 } MDecomp;
 
-int read_mode2(FILE *file, mode2_struct *m2);
+typedef struct {
+  int SGeventm, SGnHits;					//event #, # of interactions in event
+  int SGring, SGmodule, SGsector, SGslice, SGanneau;	//i.d. for ring, module, sector, slice and anneau
+  float SGenergy;					//energy of interaction
+  float SGx, SGy, SGz;					//xyz of interaction
+  float SGtime;						//time of interaction
+} Marc_G4_Struct;
+
+typedef struct {
+  int num;			//# of interactions in 1 event
+  float tot_e;			//total energy of event
+  struct {
+    float x, y, z, e;		//xyz and energy of each interaction
+  } intpts[MAX_INTPTS];
+} SigGen_G4_Struct;
+
+//int read_mode2(FILE *file, mode2_struct *m2);
+int read_G4(FILE *file, SigGen_G4_Struct *m2);
 
 #endif
