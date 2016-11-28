@@ -85,7 +85,7 @@ typedef struct {
 } MDecomp;
 
 typedef struct {
-  int SGeventm, SGnHits;					//event #, # of interactions in event
+  int SGevent, SGnHits;					//event #, # of interactions in event
   int SGring, SGmodule, SGsector, SGslice, SGanneau;	//i.d. for ring, module, sector, slice and anneau
   float SGenergy;					//energy of interaction
   float SGx, SGy, SGz;					//xyz of interaction
