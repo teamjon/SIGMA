@@ -1,0 +1,20 @@
+grid_basis.c
+
+- gcc -o grid_basis grid_basis.c point.c cyl_point.c calc_signal.c fields_ppc.c detector_geometry_ppc.c signal_calc_util.c -lm -lreadline
+
+basis_test.c
+
+- gcc -o basis_test basis_test.c read_basis.c -lm -lreadline
+
+signal_tester_ppc.c
+
+- gcc -o st signal_tester_ppc.c point.c cyl_point.c calc_signal.c fields_ppc.c detector_geometry_ppc.c signal_calc_util.c -lm -lreadline
+
+geant_siggen.c
+
+OakRidgeLBNL
+- gcc -o g_s geant_siggen.c point.c cyl_point.c calc_signal.c fields_ppc.c detector_geometry_ppc.c signal_calc_util.c read_mode2.c -lm -lreadline
+
+SIGMA
+- gcc -o g_s geant_siggen.c point.c cyl_point.c calc_signal.c fields_ppc.c detector_geometry_ppc.c signal_calc_util.c read_g4.c -lm -lreadline
+
