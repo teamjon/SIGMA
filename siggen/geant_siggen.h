@@ -4,10 +4,15 @@
 #include <stdarg.h>
 #include "pdecomp.h"
 
-#define BASIS "geant_siggen_basis.dat"					// Basis file 
+#define BASIS "geant_siggen_basis.dat"					// Basis file
+
+/* 	List of binary files from SIGMA simulaions	*/
+#define MODE2 "SigG4.dat"						// Cs Geant 4 simulation data 2mm coll
+
+/*	List of binary files from LBNL simulations	*/ 
 //#define MODE2 "Geant_Heather/ScanCs-24mmR-2mmColl.dat"		// Cs Geant 4 simulation data 2mm coll
-//#define MODE2 "Geant_Heather/ScanCo-24mmR-2mmColl.dat"			// Co Geant 4 simulation data 2mm coll
-#define MODE2 "Geant_Heather/ScanCs-24mmR-1mmColl.dat"			// Cs Geant 4 simulation data 1mm coll
+//#define MODE2 "Geant_Heather/ScanCo-24mmR-2mmColl.dat"		// Co Geant 4 simulation data 2mm coll
+//#define MODE2 "Geant_Heather/ScanCs-24mmR-1mmColl.dat"		// Cs Geant 4 simulation data 1mm coll
 //#define MODE2 "Geant_Heather/Scan.dat"				// Geant 4 test simulation data
 #define NEVNTS 100
 
@@ -101,6 +106,6 @@ typedef struct {
 } SigGen_G4_Struct;
 
 //int read_mode2(FILE *file, mode2_struct *m2);
-int read_G4(FILE *file, SigGen_G4_Struct *m2);
+int read_g4(FILE *file, SigGen_G4_Struct *m2);
 
 #endif

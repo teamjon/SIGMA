@@ -52,7 +52,8 @@ int main(void) {
   char   header[256];
 
   Basis_Point bp;
-  SigGen_G4_Struct m2;
+//  mode2_struct m2;								// OakRidgeLBNL Geant4 data struct
+  SigGen_G4_Struct m2;								// SIGMA Geant4 data struct
   SigGen_Output sgo;
 
   tau = 3.0;
@@ -86,7 +87,7 @@ int main(void) {
   old_seg = -1;
   int status = 0;
 //  while((status = read_mode2(file,&m2))) {					// use for OakRidgeLBNL detector
-  while((status = read_G4(file,&m2))) {						// use for SIGMA
+  while((status = read_g4(file,&m2))) {						// use for SIGMA
 //    if(evt_cnt>10000) break;							// evt_cnt used to test small portion of data
     if(status != 1) continue;							// If event is not type 1, continue to next event
     memset(sgo.signal_mult, 0, sizeof(sgo.signal_mult));
@@ -100,7 +101,12 @@ int main(void) {
       int nint = m2.num;
       cart.x = m2.intpts[j].x;							// Set x,y,z to struct cart
       cart.y = m2.intpts[j].y;
-      cart.z = 80 - (m2.intpts[j].z - 40);					// -40 to correct from Heather sim --> 80  - () to change beam from bottom to top
+      cart.z = 47.1 + (80 - m2.intpts[j].z);					// 47.1 to correct from Geant 4 sim --> 80 - () to change beam from bottom to top --> Correction for SIGMA geometry
+//      cart.z = 80 - (m2.intpts[j].z - 40);					// -40 to correct from Heather sim --> 80  - () to change beam from bottom to top --> Correction for OakRidgeLBNL geometry
+      if(hit_segment(cart) == -1) {
+//        printf("\n Interaction is not in the detector volume n ");
+        continue;
+      }
 
       /* Adds a 2.5 degree rotation to the x and y coords */
 /*      int rad = 24;
@@ -108,6 +114,7 @@ int main(void) {
       cart.x += rad*sin(phi);
       cart.y += rad*cos(phi);*/
       /* ------------------------------------------------ */
+
       t = get_signal(cart, s);							// Get signal/drift time s from coords cart
       seg = -1;
       if (t >= 0) {
@@ -116,13 +123,15 @@ int main(void) {
         }
         if (t > longest_drift) longest_drift = t;
       }
-
       sgo.intpts[j].x = cart.x;
       sgo.intpts[j].y = cart.y;
       sgo.intpts[j].z = cart.z;
       sgo.intpts[j].e = m2.intpts[j].e;
-      sgo.intpts[j].seg = m2.intpts[j].seg;
-      sgo.intpts[j].seg_ener = m2.intpts[j].seg_ener;
+      sgo.intpts[j].seg = seg;
+
+      sgo.intpts[j].seg_ener = m2.intpts[j].e * s[seg][time_steps-1];
+//      sgo.intpts[j].seg = m2.intpts[j].seg;
+//      sgo.intpts[j].seg_ener = m2.intpts[j].seg_ener;
       sgo.intpts[j].t_drift = get_signal(cart,s);
       e_corr = sgo.intpts[j].e;// / sgo.tot_e;
 
